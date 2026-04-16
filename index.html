@@ -210,8 +210,12 @@
             scrollY = window.scrollY; 
         });
 
-        // --- THE GLITCH CLICK EVENT ---
-        window.addEventListener('click', () => {
+// --- THE GLITCH CLICK EVENT ---
+        window.addEventListener('click', (event) => {
+            
+            // NEW: If the user clicked an HTML link (an 'A' tag), stop right here!
+            if (event.target.tagName === 'A') return; 
+
             if (myModel) {
                 raycaster.setFromCamera(mouseVector, camera);
                 const intersects = raycaster.intersectObject(myModel, true);
@@ -227,7 +231,7 @@
                     setTimeout(() => {
                         glitchPass.enabled = false;
                         glitchPass.goWild = false;
-                        window.open('https://github.com/', '_blank'); // Update this link!
+                        window.open('https://github.com/', '_blank'); // Change to your actual link
                     }, 1000);
                 }
             }
