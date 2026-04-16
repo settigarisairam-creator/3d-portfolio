@@ -96,20 +96,51 @@
         composer.addPass(bloomPass);
         composer.addPass(glitchPass); // Add glitch to the chain
 
-        // --- 3D MODEL ---
-        let myModel; 
-        const loader = new THREE.GLTFLoader();
-        loader.load('https://modelviewer.dev/shared-assets/models/Astronaut.glb', function(gltf) {
-            myModel = gltf.scene;
-            myModel.traverse((child) => {
-                if (child.isMesh) {
-                    child.material = new THREE.MeshStandardMaterial({ color: 0xff00ff, wireframe: true });
-                }
-            });
-            myModel.scale.set(1.2, 1.2, 1.2);
-            myModel.position.y = -1;
-            scene.add(myModel);
-        });
+// --- 3D MODEL: PROCEDURAL DNA HELIX ---
+        let myModel = new THREE.Group(); 
+        
+        const helixRadius = 1.2;
+        const helixHeight = 5;
+        const basePairs = 40; // Number of "rungs" on the DNA ladder
+
+        // The building blocks
+        const nodeGeo = new THREE.SphereGeometry(0.08, 8, 8);
+        const nodeMat = new THREE.MeshStandardMaterial({ color: 0xff00ff, wireframe: true }); // Neon Pink
+        const linkMat = new THREE.LineBasicMaterial({ color: 0x00ffff, transparent: true, opacity: 0.6 }); // Neon Cyan
+
+        for (let i = 0; i < basePairs; i++) {
+            // Calculate height position
+            const y = (i / basePairs) * helixHeight - (helixHeight / 2);
+            // Calculate rotation angle for the spiral
+            const angle = i * 0.5; 
+
+            // X and Z coordinates for Strand 1
+            const x1 = Math.cos(angle) * helixRadius;
+            const z1 = Math.sin(angle) * helixRadius;
+            
+            // X and Z coordinates for Strand 2 (opposite side)
+            const x2 = Math.cos(angle + Math.PI) * helixRadius;
+            const z2 = Math.sin(angle + Math.PI) * helixRadius;
+
+            // Create the two nodes
+            const node1 = new THREE.Mesh(nodeGeo, nodeMat);
+            node1.position.set(x1, y, z1);
+            myModel.add(node1);
+
+            const node2 = new THREE.Mesh(nodeGeo, nodeMat);
+            node2.position.set(x2, y, z2);
+            myModel.add(node2);
+
+            // Create the connecting rung
+            const linkGeo = new THREE.BufferGeometry().setFromPoints([
+                new THREE.Vector3(x1, y, z1),
+                new THREE.Vector3(x2, y, z2)
+            ]);
+            const link = new THREE.Line(linkGeo, linkMat);
+            myModel.add(link);
+        }
+        
+        scene.add(myModel);
 
         // --- DYNAMIC PARTICLES ---
         const particlesGeometry = new THREE.BufferGeometry();
