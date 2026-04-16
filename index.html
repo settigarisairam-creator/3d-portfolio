@@ -18,6 +18,32 @@
         .cursor { width: 8px; height: 8px; background: #00ffff; border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9999; box-shadow: 0 0 10px #00ffff; }
         .cursor-follower { width: 40px; height: 40px; border: 1px solid rgba(255, 0, 255, 0.5); border-radius: 50%; position: fixed; top: 0; left: 0; pointer-events: none; z-index: 9998; transition: transform 0.1s ease-out; }
     </style>
+    /* --- NAVIGATION LINKS --- */
+        .social-links { 
+            position: fixed; 
+            bottom: 40px; 
+            width: 100%; 
+            display: flex; 
+            justify-content: center; 
+            gap: 40px; 
+            z-index: 100; 
+            pointer-events: none; /* Lets you click the 3D canvas through the empty space */
+        }
+        .social-links a { 
+            color: #ffffff; 
+            text-decoration: none; 
+            font-size: 1.2rem; 
+            letter-spacing: 2px; 
+            text-transform: uppercase; 
+            transition: all 0.3s ease; 
+            pointer-events: auto; /* Makes the actual text clickable */
+            text-shadow: 0 0 10px rgba(0, 255, 255, 0.3); 
+        }
+        .social-links a:hover { 
+            color: #00ffff; 
+            text-shadow: 0 0 20px #00ffff, 0 0 40px #00ffff; 
+            transform: translateY(-3px);
+        }
 </head>
 <body>
 
@@ -42,6 +68,12 @@
             <p>End-to-end RAG pipeline utilizing ChromaDB for automated lecture processing.</p>
         </div>
     </section>
+    
+    <div class="social-links">
+        <a href="https://www.linkedin.com/in/sai-ram-settigari-1584b8194/" target="_blank">LinkedIn</a>
+        <a href="https://github.com/settigarisairam-creator" target="_blank">GitHub</a>
+        <a href="mailto:settigarisairam@gmail.com">Email</a>
+    </div>
 
     <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/loaders/GLTFLoader.js"></script>
